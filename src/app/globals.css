@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/*
+ * Semantic colour tokens.
+ *
+ * Each token is defined once per colour scheme below and exposed to Tailwind
+ * through `@theme inline`, which generates utilities like `bg-surface` and
+ * `text-muted`. Because the values swap at the variable level, dark mode works
+ * without sprinkling `dark:` on every element.
+ */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+}
+
+:root {
+  --canvas: #f6f7f9;
+  --surface: #ffffff;
+  --surface-muted: #f1f2f5;
+  --line: #e3e5ea;
+  --ink: #16181d;
+  --muted: #6b7280;
+  --accent: #4f46e5;
+  --accent-ink: #ffffff;
+
+  /* System fonts keep the app buildable offline. To use a webfont instead,
+     add `next/font/google` in layout.tsx and point --app-font-sans at it. */
+  --app-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --app-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0c0d10;
+    --surface: #16181d;
+    --surface-muted: #1d2027;
+    --line: #2a2e37;
+    --ink: #e8eaed;
+    --muted: #9096a1;
+    --accent: #7c74ff;
+    --accent-ink: #0c0d10;
+  }
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Shared building blocks.
+ *
+ * Tailwind v4 registers these through `@utility` rather than `@layer
+ * components`. The difference matters: only real utilities can be used with
+ * `@apply`, and `@utility` also slots them into the correct cascade layer so a
+ * plain utility in the markup still wins over them.
+ *
+ * Each block is written out in full instead of composing (`@apply btn`) so the
+ * definitions stay independent of the order Tailwind resolves them in.
+ */
+@utility field {
+  @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm
+         text-ink outline-none transition
+         placeholder:text-muted
+         focus:border-accent focus:ring-2 focus:ring-accent/25;
+}
+
+@utility label {
+  @apply mb-1 block text-xs font-medium text-muted;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2
+         text-sm font-medium transition
+         disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility btn-primary {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2
+         text-sm font-medium transition
+         disabled:cursor-not-allowed disabled:opacity-50
+         bg-accent text-accent-ink hover:opacity-90;
+}
+
+@utility btn-ghost {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2
+         text-sm font-medium transition
+         disabled:cursor-not-allowed disabled:opacity-50
+         border border-line bg-surface text-ink hover:bg-surface-muted;
+}
+
+@utility btn-quiet {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-1
+         text-xs font-medium transition
+         disabled:cursor-not-allowed disabled:opacity-50
+         text-muted hover:bg-surface-muted hover:text-ink;
+}
+
+@utility card {
+  @apply rounded-xl border border-line bg-surface;
+}
+
+@utility error-text {
+  @apply mt-1 block text-xs text-rose-600 dark:text-rose-400;
+}
+
+/* Columns scroll independently; slim down the scrollbar chrome on WebKit. */
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}

@@ -169,6 +169,36 @@ anyone who reaches the deployment can read and edit everything.
 
 ---
 
+## Pushing this to GitHub
+
+Double-click the file for your OS. It installs nothing and asks for no
+passwords — it opens GitHub's own browser login, creates a **private** repo
+named `job-application-tracker`, and pushes.
+
+| OS | File |
+| --- | --- |
+| Windows | `push-to-github.bat` |
+| macOS | `push-to-github.command` |
+| Linux | `push-to-github.sh` |
+
+It needs the GitHub CLI (`gh`); if it's missing the script tells you the one
+command to install it. Want a different name or a public repo? Change
+`REPO_NAME` and `VISIBILITY` at the top of the script.
+
+**macOS:** the first double-click may be blocked with "cannot be opened because
+it is from an unidentified developer" — that's Gatekeeper flagging a file that
+came out of a downloaded zip. Right-click the file → **Open** → **Open**, and it
+runs. You only have to do that once.
+
+Or skip the script entirely:
+
+```bash
+gh repo create job-application-tracker --private
+git push -u origin main
+```
+
+---
+
 ## About keeping it in a private repo
 
 The tracker holds recruiter names, email addresses and salary numbers, so a
